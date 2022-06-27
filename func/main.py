@@ -16,14 +16,14 @@ from func.src.services.snapshot import SnapshotUserDataService
 
 
 def post_user_ticket():
-    message = "Jormungandr::post_user_ticket"
+    message = "Jormungandr::post_user_account_close"
     jwt = flask.request.headers.get("x-thebes-answer")
     try:
         JwtService.apply_authentication_rules(jwt=jwt)
         decoded_jwt = JwtService.decode_jwt(jwt=jwt)
-        snapshot = SnapshotUserDataService.get_snapshot(jwt=jwt)
+        # snapshot = SnapshotUserDataService.get_snapshot(jwt=jwt)
         success = CreateTicketService.set_tickets(
-            snapshot=snapshot,
+            snapshot="",
             decoded_jwt=decoded_jwt,
         )
 
