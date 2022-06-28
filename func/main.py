@@ -23,7 +23,7 @@ def post_user_ticket():
         decoded_jwt = JwtService.decode_jwt(jwt=jwt)
         # snapshot = SnapshotUserDataService.get_snapshot(jwt=jwt)
         success = CreateTicketService.set_tickets(
-            snapshot="",
+            snapshot="Cliente deseja encerramento de conta",
             decoded_jwt=decoded_jwt,
         )
 

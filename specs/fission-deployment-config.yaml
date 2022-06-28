@@ -4,4 +4,4 @@
 apiVersion: fission.io/v1
 kind: DeploymentConfig
 name: support-post-user-account-close
-uid: 669a301c-8ebd-40f5-9f33-a1eef61efb91
+uid: 2737335b-e386-41de-bfb9-5b83a72f334a
