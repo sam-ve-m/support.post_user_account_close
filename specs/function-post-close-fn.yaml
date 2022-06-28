@@ -1,0 +1,55 @@
+include:
+- ./func/*
+kind: ArchiveUploadSpec
+name: func-vbDI
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: post-close-fn-c6ba4620-6d65-49df-9296-8b58bb98bad8
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: post-close-env
+    namespace: default
+  source:
+    checksum: {}
+    type: url
+    url: archive://func-vbDI
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2022-06-28T16:38:27Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: post-close-fn
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 1
+      MinScale: 1
+      SpecializationTimeout: 120
+      TargetCPUPercent: 80
+    StrategyType: execution
+  concurrency: 500
+  environment:
+    name: post-close-env
+    namespace: default
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: main.post_user_ticket
+    packageref:
+      name: post-close-fn-c6ba4620-6d65-49df-9296-8b58bb98bad8
+      namespace: default
+  requestsPerPod: 1
+  resources: {}
