@@ -51,6 +51,7 @@ class ZendeskRepository:
     def set_ticket(cls, user: User, comment: Comment) -> Ticket:
         ticket = Ticket(
             subject=cls.SUBJECT,
+            description="Cliente deseja encerrar a conta",
             requester_id=user.id,
             ticket_type=cls.TICKET_TYPE,
             via=ZendeskRepository.method,

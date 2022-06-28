@@ -1,0 +1,55 @@
+include:
+- ./func/*
+kind: ArchiveUploadSpec
+name: func-jtzH
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: post-close-fn-ff5dc6f0-ebd8-424d-8c51-5ad29e8a59c4
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: post-close-env
+    namespace: default
+  source:
+    checksum: {}
+    type: url
+    url: archive://func-jtzH
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2022-06-28T12:23:08Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: post-close-fn
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 1
+      MinScale: 1
+      SpecializationTimeout: 120
+      TargetCPUPercent: 80
+    StrategyType: execution
+  concurrency: 500
+  environment:
+    name: post-close-env
+    namespace: default
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: main.post_user_ticket
+    packageref:
+      name: post-close-fn-ff5dc6f0-ebd8-424d-8c51-5ad29e8a59c4
+      namespace: default
+  requestsPerPod: 1
+  resources: {}
