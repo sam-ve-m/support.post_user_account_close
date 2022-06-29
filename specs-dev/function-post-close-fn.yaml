@@ -1,14 +1,14 @@
 include:
 - ./func/*
 kind: ArchiveUploadSpec
-name: func-vbDI
+name: func-h4Vx
 
 ---
 apiVersion: fission.io/v1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: post-close-fn-c6ba4620-6d65-49df-9296-8b58bb98bad8
+  name: post-close-fn-4fac400c-5a94-4a5e-8de8-499594ac38cd
   namespace: default
 spec:
   deployment:
@@ -19,10 +19,10 @@ spec:
   source:
     checksum: {}
     type: url
-    url: archive://func-vbDI
+    url: archive://func-h4Vx
 status:
   buildstatus: pending
-  lastUpdateTimestamp: "2022-06-28T16:38:27Z"
+  lastUpdateTimestamp: "2022-06-29T13:49:11Z"
 
 ---
 apiVersion: fission.io/v1
@@ -49,7 +49,34 @@ spec:
   package:
     functionName: main.post_user_ticket
     packageref:
-      name: post-close-fn-c6ba4620-6d65-49df-9296-8b58bb98bad8
+      name: post-close-fn-4fac400c-5a94-4a5e-8de8-499594ac38cd
       namespace: default
   requestsPerPod: 1
   resources: {}
+
+---
+include:
+- ./func/*
+kind: ArchiveUploadSpec
+name: func-NzjX
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: post-close-fn-2a2c6457-ab17-4928-b4de-9f95a95005c3
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: post-close-env
+    namespace: default
+  source:
+    checksum: {}
+    type: url
+    url: archive://func-NzjX
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2022-06-29T13:55:16Z"
