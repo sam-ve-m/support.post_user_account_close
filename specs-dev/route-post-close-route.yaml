@@ -14,10 +14,10 @@ spec:
   ingressconfig:
     annotations: null
     host: '*'
-    path: /ticket/post_user_account_close
+    path: /support/post-ticket-user-account-close
     tls: ""
   method: ""
   methods:
   - POST
   prefix: ""
-  relativeurl: /ticket/post_user_account_close
+  relativeurl: /support/post-ticket-user-account-close

@@ -11,9 +11,9 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /router/ticket/post_user_account_close
+        prefix: /router/support/post-ticket-user-account-close
     rewrite:
-      uri: /ticket/post_user_account_close
+      uri: /support/post-ticket-user-account-close
     route:
     - destination:
         host: router.fission.svc.cluster.local
