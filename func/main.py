@@ -1,30 +1,31 @@
 # Jormungandr
-from src.domain.enums import CodeResponse
-from src.domain.exceptions import InvalidJwtToken
-from src.domain.response.model import ResponseModel
-from src.services.jwt import JwtService
-from src.services.post_user_ticket import CreateTicketService
-
 # Standards
 from http import HTTPStatus
 
+import flask
 # Third party
 from etria_logger import Gladsheim
-import flask
 
-from src.services.snapshot import SnapshotUserDataService
+from src.domain.enums.enums import CodeResponse
+from src.domain.exceptions.exceptions import InvalidJwtToken, JormungandrCommunication, ErrorWithZendesk, \
+    UnableToBuildSnapshot
+from src.domain.models.response.model import ResponseModel
+from src.services.jwt.service import JwtService
+from src.services.snapshot.service import SnapshotUserDataService
+from src.services.zendesk.service import CreateTicketService
 
 
 def post_user_ticket():
-    message = "Jormungandr::post_user_account_close"
+    message = "Jormungandr::post_user_ticket"
     jwt = flask.request.headers.get("x-thebes-answer")
     try:
         JwtService.apply_authentication_rules(jwt=jwt)
         decoded_jwt = JwtService.decode_jwt(jwt=jwt)
-        # snapshot = SnapshotUserDataService.get_snapshot(jwt=jwt)
+        snapshot = SnapshotUserDataService.get_snapshot(jwt=jwt)
         success = CreateTicketService.set_tickets(
-            snapshot="Cliente deseja encerramento de conta",
             decoded_jwt=decoded_jwt,
+            snapshot=snapshot,
+            jwt=jwt,
         )
 
         response_model = ResponseModel.build_response(
@@ -49,6 +50,32 @@ def post_user_ticket():
         response = ResponseModel.build_http_response(
             response_model=response_model,
             status=HTTPStatus.UNAUTHORIZED
+        )
+        return response
+
+    except ValueError as ex:
+        Gladsheim.error(ex=ex, message=f'{message}::There are invalid format or extra parameters')
+        response_model = ResponseModel.build_response(
+            success=False,
+            code=CodeResponse.INVALID_PARAMS,
+            message="There are invalid format or extra/missing parameters",
+        )
+        response = ResponseModel.build_http_response(
+            response_model=response_model,
+            status=HTTPStatus.BAD_REQUEST
+        )
+        return response
+
+    except (JormungandrCommunication, ErrorWithZendesk, UnableToBuildSnapshot) as ex:
+        Gladsheim.error(ex=ex, message=f'{message}::{ex.msg}')
+        response_model = ResponseModel.build_response(
+            success=False,
+            code=CodeResponse.PARTNERS_ERROR_ON_API_REQUEST,
+            message=ex.msg,
+        )
+        response = ResponseModel.build_http_response(
+            response_model=response_model,
+            status=HTTPStatus.SERVICE_UNAVAILABLE
         )
         return response
 
