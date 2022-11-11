@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: post-close-fn-vs
+  namespace: fission
+spec:
+  hosts:
+    - dev.api.siga.me
+  gateways:
+    - develop/dev-istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /router/support/post-ticket-user-account-close
+    rewrite:
+      uri: /support/post-ticket-user-account-close
+    route:
+    - destination:
+        host: router.fission.svc.cluster.local
+        port:
+          number: 80
