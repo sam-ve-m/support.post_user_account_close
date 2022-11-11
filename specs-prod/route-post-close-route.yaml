@@ -20,4 +20,4 @@ spec:
   methods:
   - POST
   prefix: ""
-  relativeurl: /ticket/post_user_account_close
+  relativeurl: /support/post-ticket-user-account-close
